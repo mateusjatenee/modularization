@@ -96,29 +96,6 @@ namespace Modules\Order\Models{
 
 namespace Modules\Product\Models{
 /**
- * Modules\Product\Models\CartItem
- *
- * @property int $id
- * @property int $quantity
- * @property int $user_id
- * @property int $product_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem query()
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereUserId($value)
- */
-	class CartItem extends \Eloquent {}
-}
-
-namespace Modules\Product\Models{
-/**
  * Modules\Product\Models\Product
  *
  * @property int $id

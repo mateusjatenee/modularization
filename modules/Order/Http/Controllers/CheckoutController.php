@@ -6,23 +6,24 @@ use Illuminate\Validation\ValidationException;
 use Modules\Order\Http\Requests\CheckoutRequest;
 use Modules\Order\Models\Order;
 use Modules\Payment\PayBuddy;
+use Modules\Product\CartItem;
+use Modules\Product\CartItemCollection;
 use Modules\Product\Models\Product;
+use Modules\Product\Warehouse\ProductStockManager;
 use RuntimeException;
 
 class CheckoutController
 {
+    public function __construct(
+        protected ProductStockManager $productStockManager
+    )
+    {
+    }
+
     public function __invoke(CheckoutRequest $request)
     {
-        $products = collect($request->input('products'))->map(function (array $productDetails) {
-            return [
-                'product' => Product::find($productDetails['id']),
-                'quantity' => $productDetails['quantity']
-            ];
-        });
-
-        $orderTotalInCents = $products->sum(fn (array $productDetails) =>
-            $productDetails['quantity'] * $productDetails['product']->price_in_cents
-        );
+        $cartItems = CartItemCollection::fromCheckoutData($request->input('products'));
+        $orderTotalInCents = $cartItems->totalInCents();
 
         $payBuddy = PayBuddy::make();
 
@@ -42,13 +43,13 @@ class CheckoutController
             'user_id' => $request->user()->id
         ]);
 
-        foreach ($products as $product) {
-            $product['product']->decrement('stock');
+        foreach ($cartItems->items() as $cartItem) {
+            $this->productStockManager->decrement($cartItem->product->id, $cartItem->quantity);
 
             $order->lines()->create([
-                'product_id' => $product['product']->id,
-                'product_price_in_cents' => $product['product']->price_in_cents,
-                'quantity' => $product['quantity']
+                'product_id' => $cartItem->product->id,
+                'product_price_in_cents' => $cartItem->product->priceInCents,
+                'quantity' => $cartItem->quantity
             ]);
         }
 
