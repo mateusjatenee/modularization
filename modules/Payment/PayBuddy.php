@@ -5,7 +5,7 @@ namespace Modules\Payment;
 use Illuminate\Support\Str;
 use NumberFormatter;
 
-final class ImaginaryPaymentProvider
+final class PayBuddy
 {
     public function charge(string $token, int $amountInCents, string $statementDescription): array
     {
@@ -22,9 +22,19 @@ final class ImaginaryPaymentProvider
         ];
     }
 
-    public static function make(): ImaginaryPaymentProvider
+    public static function make(): PayBuddy
     {
         return new self();
+    }
+
+    public static function validToken(): string
+    {
+        return (string) Str::uuid();
+    }
+
+    public static function invalidToken(): string
+    {
+        return substr(self::validToken(), -35);
     }
 
     /**
