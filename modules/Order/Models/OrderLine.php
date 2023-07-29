@@ -12,7 +12,7 @@ class OrderLine extends Model
     protected $fillable = [
         'order_id',
         'product_id',
-        'product_price',
+        'product_price_in_cents',
         'quantity',
     ];
 

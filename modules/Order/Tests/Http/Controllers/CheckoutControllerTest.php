@@ -58,5 +58,30 @@ class CheckoutControllerTest extends OrderTestCase
             $this->assertEquals($product->price_in_cents, $orderLine->product_price_in_cents);
             $this->assertEquals(1, $orderLine->quantity);
         }
+
+        $products = $products->fresh();
+
+        $this->assertEquals(9, $products->first()->stock);
+        $this->assertEquals(9, $products->last()->stock);
+    }
+
+    #[Test]
+    public function it_fails_with_an_invalid_token(): void
+    {
+        $user = UserFactory::new()->create();
+        $product = ProductFactory::new()->create();
+        $paymentToken = PayBuddy::invalidToken();
+
+        $response = $this->actingAs($user)
+                         ->postJson(route('order::checkout', [
+                             'payment_token' => $paymentToken,
+                             'products' => [
+                                 ['id' => $product->id, 'quantity' => 1]
+                             ]
+                         ]));
+
+        $response->assertStatus(422)
+                 ->assertJsonValidationErrors(['payment_token']);
+
     }
 }
