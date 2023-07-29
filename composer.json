@@ -9,9 +9,11 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
         "laravel/sanctum": "^3.2",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "ext-intl": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -46,6 +48,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "ide": [
+            "@php artisan ide-helper:models --dir='modules'"
         ]
     },
     "extra": {
