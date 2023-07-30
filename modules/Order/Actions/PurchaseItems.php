@@ -4,14 +4,14 @@ namespace Modules\Order\Actions;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\DatabaseManager;
-use Illuminate\Support\Facades\Mail;
+use Modules\Order\DTOs\OrderDto;
+use Modules\Order\DTOs\PendingPayment;
 use Modules\Order\Events\OrderFulfilled;
-use Modules\Order\Mail\OrderReceived;
 use Modules\Order\Models\Order;
 use Modules\Payment\Actions\CreatePaymentForOrder;
-use Modules\Payment\PayBuddy;
 use Modules\Product\CartItemCollection;
 use Modules\Product\Warehouse\ProductStockManager;
+use Modules\User\UserDto;
 
 class PurchaseItems
 {
@@ -23,34 +23,27 @@ class PurchaseItems
     ) {
     }
 
-    public function handle(CartItemCollection $items, PayBuddy $paymentProvider, string $paymentToken, int $userId, string $userEmail): Order
+    public function handle(CartItemCollection $items, PendingPayment $pendingPayment, UserDto $user): OrderDto
     {
-        /** @var Order $order */
-        $order = $this->databaseManager->transaction(function () use ($paymentToken, $paymentProvider, $items, $userId) {
-            $order = Order::startForUser($userId);
+        /** @var OrderDto $order */
+        $order = $this->databaseManager->transaction(function () use ($pendingPayment, $user, $items) {
+            $order = Order::startForUser($user->id);
             $order->addLinesFromCartItems($items);
             $order->fulfill();
 
             $this->createPaymentForOrder->handle(
                 $order->id,
-                $userId,
+                $user->id,
                 $items->totalInCents(),
-                $paymentProvider,
-                $paymentToken
+                $pendingPayment->provider,
+                $pendingPayment->paymentToken
             );
 
-            return $order;
+            return OrderDto::fromEloquentModel($order);
         });
 
         $this->events->dispatch(
-            new OrderFulfilled(
-                orderId: $order->id,
-                totalInCents: $order->total_in_cents,
-                localizedTotal: $order->localizedTotal(),
-                cartItems: $items,
-                userId: $userId,
-                userEmail: $userEmail
-            )
+            new OrderFulfilled($order, $user)
         );
 
         return $order;
