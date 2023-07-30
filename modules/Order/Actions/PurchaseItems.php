@@ -3,13 +3,11 @@
 namespace Modules\Order\Actions;
 
 use Illuminate\Database\DatabaseManager;
-use Modules\Order\Exceptions\PaymentFailedException;
 use Modules\Order\Models\Order;
 use Modules\Payment\Actions\CreatePaymentForOrder;
 use Modules\Payment\PayBuddy;
 use Modules\Product\CartItemCollection;
 use Modules\Product\Warehouse\ProductStockManager;
-use RuntimeException;
 
 class PurchaseItems
 {
@@ -17,8 +15,7 @@ class PurchaseItems
         protected ProductStockManager $productStockManager,
         protected CreatePaymentForOrder $createPaymentForOrder,
         protected DatabaseManager $databaseManager
-    )
-    {
+    ) {
     }
 
     public function handle(CartItemCollection $items, PayBuddy $paymentProvider, string $paymentToken, int $userId): Order
@@ -38,7 +35,7 @@ class PurchaseItems
                 $order->lines()->create([
                     'product_id' => $cartItem->product->id,
                     'product_price_in_cents' => $cartItem->product->priceInCents,
-                    'quantity' => $cartItem->quantity
+                    'quantity' => $cartItem->quantity,
                 ]);
             }
 

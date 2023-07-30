@@ -3,7 +3,6 @@
 namespace Modules\Product\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Modules\Product\Database\Factories\ProductFactory;
 use Modules\Product\Models\Product;
 use Tests\TestCase;
 

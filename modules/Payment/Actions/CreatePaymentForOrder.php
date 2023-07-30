@@ -28,7 +28,7 @@ class CreatePaymentForOrder
             'payment_gateway' => 'PayBuddy',
             'payment_id' => $charge['id'],
             'user_id' => $userId,
-            'order_id' => $orderId
+            'order_id' => $orderId,
         ]);
     }
 }

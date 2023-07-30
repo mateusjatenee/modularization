@@ -18,7 +18,7 @@ class PaymentFactory extends Factory
             'status' => 'paid',
             'payment_gateway' => 'PayBuddy',
             'payment_id' => (string) Str::uuid(),
-            'user_id' => UserFactory::new()
+            'user_id' => UserFactory::new(),
         ];
     }
 }

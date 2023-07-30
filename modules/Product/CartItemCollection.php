@@ -12,8 +12,7 @@ class CartItemCollection
      */
     public function __construct(
         protected Collection $items
-    )
-    {
+    ) {
     }
 
     public static function fromCheckoutData(array $data): CartItemCollection
@@ -30,8 +29,7 @@ class CartItemCollection
 
     public function totalInCents(): int
     {
-        return $this->items->sum(fn (CartItem $cartItem) =>
-            $cartItem->quantity * $cartItem->product->priceInCents
+        return $this->items->sum(fn (CartItem $cartItem) => $cartItem->quantity * $cartItem->product->priceInCents
         );
     }
 

@@ -29,22 +29,21 @@ class CheckoutControllerTest extends OrderTestCase
         $paymentToken = PayBuddy::validToken();
 
         $response = $this->actingAs($user)
-                         ->post(route('order::checkout', [
-                             'payment_token' => $paymentToken,
-                             'products' => [
-                                 ['id' => $products->first()->id, 'quantity' => 1],
-                                 ['id' => $products->last()->id, 'quantity' => 1]
-                             ]
-                         ]));
+            ->post(route('order::checkout', [
+                'payment_token' => $paymentToken,
+                'products' => [
+                    ['id' => $products->first()->id, 'quantity' => 1],
+                    ['id' => $products->last()->id, 'quantity' => 1],
+                ],
+            ]));
 
         $order = Order::query()->latest('id')->first();
 
         $response
             ->assertJson([
-                'order_url' => $order->url()
+                'order_url' => $order->url(),
             ])
             ->assertStatus(201);
-
 
         // Order
         $this->assertTrue($order->user->is($user));
@@ -84,15 +83,15 @@ class CheckoutControllerTest extends OrderTestCase
         $paymentToken = PayBuddy::invalidToken();
 
         $response = $this->actingAs($user)
-                         ->postJson(route('order::checkout', [
-                             'payment_token' => $paymentToken,
-                             'products' => [
-                                 ['id' => $product->id, 'quantity' => 1]
-                             ]
-                         ]));
+            ->postJson(route('order::checkout', [
+                'payment_token' => $paymentToken,
+                'products' => [
+                    ['id' => $product->id, 'quantity' => 1],
+                ],
+            ]));
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['payment_token']);
+            ->assertJsonValidationErrors(['payment_token']);
 
         $this->assertEquals(0, Order::query()->count());
     }

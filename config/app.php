@@ -175,7 +175,7 @@ return [
         OrderServiceProvider::class,
         ProductServiceProvider::class,
         ShipmentServiceProvider::class,
-        PaymentServiceProvider::class
+        PaymentServiceProvider::class,
     ])->toArray(),
 
     /*
