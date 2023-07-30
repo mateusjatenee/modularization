@@ -44,4 +44,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderLine::class);
     }
+
+    public function url(): string
+    {
+        return route('order::orders.show', $this);
+    }
 }

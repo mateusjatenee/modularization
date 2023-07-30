@@ -37,15 +37,20 @@ class CheckoutControllerTest extends OrderTestCase
                              ]
                          ]));
 
-        $response->assertStatus(201);
-
         $order = Order::query()->latest('id')->first();
+
+        $response
+            ->assertJson([
+                'order_url' => $order->url()
+            ])
+            ->assertStatus(201);
+
 
         // Order
         $this->assertTrue($order->user->is($user));
         $this->assertEquals(60000, $order->total_in_cents);
         $this->assertEquals('completed', $order->status);
-        
+
         // Payment
         $payment = $order->lastPayment;
         $this->assertEquals('paid', $payment->status);
