@@ -10,7 +10,7 @@ class EventServiceProvider extends BaseEventServiceProvider
 {
     protected $listen = [
         OrderFulfilled::class => [
-            DecreaseProductStock::class
-        ]
+            DecreaseProductStock::class,
+        ],
     ];
 }
