@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Order\Exceptions;
+namespace Modules\Payment\Exceptions;
 
 use RuntimeException;
 
