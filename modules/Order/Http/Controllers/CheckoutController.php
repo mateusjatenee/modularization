@@ -25,7 +25,8 @@ class CheckoutController
                 $cartItems,
                 PayBuddy::make(),
                 $request->input('payment_token'),
-                $request->user()->id
+                $request->user()->id,
+                userEmail: $request->user()->email
             );
         } catch (PaymentFailedException) {
             throw ValidationException::withMessages([

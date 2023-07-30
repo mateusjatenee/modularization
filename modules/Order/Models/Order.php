@@ -12,6 +12,7 @@ use Modules\Order\Exceptions\OrderMissingOrderLinesException;
 use Modules\Payment\Payment;
 use Modules\Product\CartItem;
 use Modules\Product\CartItemCollection;
+use NumberFormatter;
 
 class Order extends Model
 {
@@ -57,17 +58,21 @@ class Order extends Model
         return route('order::orders.show', $this);
     }
 
+    public function localizedTotal(): string
+    {
+        return (new NumberFormatter('en-US', NumberFormatter::CURRENCY))->formatCurrency($this->total_in_cents / 100, 'USD');
+    }
+
     public static function startForUser(int $userId): self
     {
         return self::make([
             'user_id' => $userId,
-            'status' => self::PENDING
+            'status' => self::PENDING,
         ]);
     }
 
     /**
      * @param  \Modules\Product\CartItemCollection<CartItem>  $items
-     * @return void
      */
     public function addLinesFromCartItems(CartItemCollection $items): void
     {
@@ -75,7 +80,7 @@ class Order extends Model
             $this->lines->push(OrderLine::make([
                 'product_id' => $item->product->id,
                 'product_price_in_cents' => $item->product->priceInCents,
-                'quantity' => $item->quantity
+                'quantity' => $item->quantity,
             ]));
         }
 
