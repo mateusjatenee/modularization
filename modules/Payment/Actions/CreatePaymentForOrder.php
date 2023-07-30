@@ -9,6 +9,9 @@ use RuntimeException;
 
 class CreatePaymentForOrder
 {
+    /**
+     * @throws \Modules\Order\Exceptions\PaymentFailedException
+     */
     public function handle(
         int $orderId,
         int $userId,
