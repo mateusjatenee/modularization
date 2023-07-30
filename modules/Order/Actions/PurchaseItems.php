@@ -2,8 +2,10 @@
 
 namespace Modules\Order\Actions;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Support\Facades\Mail;
+use Modules\Order\Events\OrderFulfilled;
 use Modules\Order\Mail\OrderReceived;
 use Modules\Order\Models\Order;
 use Modules\Payment\Actions\CreatePaymentForOrder;
@@ -16,7 +18,8 @@ class PurchaseItems
     public function __construct(
         protected ProductStockManager $productStockManager,
         protected CreatePaymentForOrder $createPaymentForOrder,
-        protected DatabaseManager $databaseManager
+        protected DatabaseManager $databaseManager,
+        protected Dispatcher $events
     ) {
     }
 
@@ -27,10 +30,6 @@ class PurchaseItems
             $order = Order::startForUser($userId);
             $order->addLinesFromCartItems($items);
             $order->fulfill();
-
-            foreach ($items->items() as $cartItem) {
-                $this->productStockManager->decrement($cartItem->product->id, $cartItem->quantity);
-            }
 
             $this->createPaymentForOrder->handle(
                 $order->id,
@@ -43,7 +42,16 @@ class PurchaseItems
             return $order;
         });
 
-        Mail::to($userEmail)->send(new OrderReceived($order->localizedTotal()));
+        $this->events->dispatch(
+            new OrderFulfilled(
+                orderId: $order->id,
+                totalInCents: $order->total_in_cents,
+                localizedTotal: $order->localizedTotal(),
+                cartItems: $items,
+                userId: $userId,
+                userEmail: $userEmail
+            )
+        );
 
         return $order;
     }
