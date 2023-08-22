@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Order\Models;
+namespace Modules\Order;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Order\DTOs;
+namespace Modules\Order\Contracts;
 
 use Modules\Payment\PaymentGateway;
 

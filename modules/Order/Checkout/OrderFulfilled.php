@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Order\Events;
+namespace Modules\Order\Checkout;
 
-use Modules\Order\DTOs\OrderDto;
+use Modules\Order\Contracts\OrderDto;
 use Modules\User\UserDto;
 
 readonly class OrderFulfilled

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Order\DTOs;
+namespace Modules\Order\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Order\Models\OrderLine;
+use Modules\Order\OrderLine;
 
 readonly class OrderLineDto
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Order\Models;
+namespace Modules\Order;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Modules\Order\Exceptions\OrderMissingOrderLinesException;
 use Modules\Payment\Payment;
 use Modules\Product\CartItem;
 use Modules\Product\CartItemCollection;
@@ -88,7 +87,7 @@ class Order extends Model
     }
 
     /**
-     * @throws \Modules\Order\Exceptions\OrderMissingOrderLinesException
+     * @throws \Modules\Order\OrderMissingOrderLinesException
      */
     public function fulfill(): void
     {

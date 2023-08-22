@@ -6,8 +6,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
-use Modules\Order\Mail\OrderReceived;
-use Modules\Order\Models\Order;
+use Modules\Order\Checkout\OrderReceived;
+use Modules\Order\Order;
 use Modules\Order\Tests\OrderTestCase;
 use Modules\Payment\PayBuddySdk;
 use Modules\Payment\PaymentProvider;
@@ -72,7 +72,7 @@ class CheckoutControllerTest extends OrderTestCase
         $this->assertCount(2, $order->lines);
 
         foreach ($products as $product) {
-            /** @var \Modules\Order\Models\OrderLine $orderLine */
+            /** @var \Modules\Order\OrderLine $orderLine */
             $orderLine = $order->lines->where('product_id', $product->id)->first();
 
             $this->assertEquals($product->price_in_cents, $orderLine->product_price_in_cents);

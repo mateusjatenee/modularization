@@ -2,7 +2,7 @@
 
 namespace Modules\Order\Tests\Models;
 
-use Modules\Order\Models\Order;
+use Modules\Order\Order;
 use Modules\Order\Tests\OrderTestCase;
 
 class OrderTest extends OrderTestCase

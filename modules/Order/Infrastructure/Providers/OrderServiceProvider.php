@@ -1,10 +1,9 @@
 <?php
 
-namespace Modules\Order\Providers;
+namespace Modules\Order\Infrastructure\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Order\ViewComponents\Alert;
 
 class OrderServiceProvider extends ServiceProvider
 {
@@ -16,9 +15,9 @@ class OrderServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
 
-        $this->loadViewsFrom(__DIR__ . '/../Views', 'order');
+        $this->loadViewsFrom(__DIR__ . '/../../Ui/Views', 'order');
 
-        Blade::anonymousComponentPath(__DIR__ . '/../Views/components', 'order');
-        Blade::componentNamespace('Modules\\Order\\ViewComponents', 'order');
+        Blade::anonymousComponentPath(__DIR__ . '/../../Ui/Views/components', 'order');
+        Blade::componentNamespace('Modules\\Order\\Ui\\ViewComponents', 'order');
     }
 }

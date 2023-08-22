@@ -42,9 +42,9 @@ namespace App\Models{
 	class User extends \Eloquent {}
 }
 
-namespace Modules\Order\Models{
+namespace Modules\Order{
 /**
- * Modules\Order\Models\Order
+ * Modules\Order\Order
  *
  * @property int $id
  * @property int $user_id
@@ -53,7 +53,7 @@ namespace Modules\Order\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Modules\Payment\Payment|null $lastPayment
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Order\Models\OrderLine> $lines
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Order\OrderLine> $lines
  * @property-read int|null $lines_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Modules\Payment\Payment> $payments
  * @property-read int|null $payments_count
@@ -71,9 +71,9 @@ namespace Modules\Order\Models{
 	class Order extends \Eloquent {}
 }
 
-namespace Modules\Order\Models{
+namespace Modules\Order{
 /**
- * Modules\Order\Models\OrderLine
+ * Modules\Order\OrderLine
  *
  * @property int $id
  * @property int $order_id
@@ -103,13 +103,13 @@ namespace Modules\Payment{
  * @property int $id
  * @property int $total_in_cents
  * @property string $status
- * @property string $payment_gateway
+ * @property \Modules\Payment\PaymentProvider $payment_gateway
  * @property string $payment_id
  * @property int $user_id
  * @property int $order_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Modules\Order\Models\Order|null $order
+ * @property-read \Modules\Order\Order|null $order
  * @property-read \App\Models\User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
