@@ -4,7 +4,7 @@ namespace Modules\Product\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Product\Database\Factories\ProductFactory;
+use Modules\Product\Database\factories\ProductFactory;
 
 class Product extends Model
 {

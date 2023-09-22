@@ -11,7 +11,7 @@ use Modules\Order\Order;
 use Modules\Order\Tests\OrderTestCase;
 use Modules\Payment\PayBuddySdk;
 use Modules\Payment\PaymentProvider;
-use Modules\Product\Database\Factories\ProductFactory;
+use Modules\Product\Database\factories\ProductFactory;
 use PHPUnit\Framework\Attributes\Test;
 
 class CheckoutControllerTest extends OrderTestCase
