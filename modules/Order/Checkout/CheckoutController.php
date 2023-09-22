@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Modules\Order\Contracts\PendingPayment;
 use Modules\Payment\Exceptions\PaymentFailedException;
 use Modules\Payment\PaymentGateway;
-use Modules\Product\CartItemCollection;
+use Modules\Product\Collections\CartItemCollection;
 use Modules\User\UserDto;
 
 class CheckoutController

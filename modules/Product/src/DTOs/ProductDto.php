@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Product;
+namespace Modules\Product\DTOs;
 
 use Modules\Product\Models\Product;
 

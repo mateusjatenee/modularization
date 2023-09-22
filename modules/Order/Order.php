@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Payment\Payment;
-use Modules\Product\CartItem;
-use Modules\Product\CartItemCollection;
+use Modules\Product\Collections\CartItemCollection;
+use Modules\Product\DTOs\CartItem;
 use NumberFormatter;
 
 class Order extends Model
@@ -71,7 +71,7 @@ class Order extends Model
     }
 
     /**
-     * @param  \Modules\Product\CartItemCollection<CartItem>  $items
+     * @param  \Modules\Product\Collections\CartItemCollection<CartItem>  $items
      */
     public function addLinesFromCartItems(CartItemCollection $items): void
     {
@@ -83,7 +83,7 @@ class Order extends Model
             ]));
         }
 
-        $this->total_in_cents = $this->lines->sum(fn (OrderLine $line) => $line->product_price_in_cents);
+        $this->total_in_cents = $this->lines->sum(fn (OrderLine $line) => $line->total());
     }
 
     /**

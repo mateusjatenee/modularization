@@ -22,4 +22,9 @@ class OrderLine extends Model
         'product_price_in_cents' => 'integer',
         'quantity' => 'integer',
     ];
+
+    public function total(): int
+    {
+        return $this->product_price_in_cents * $this->quantity;
+    }
 }
