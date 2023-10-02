@@ -11,6 +11,11 @@ use Modules\Payment\PaymentGateway;
 
 class PaymentServiceProvider extends ServiceProvider
 {
+    public function register(): void
+    {
+        $this->app->register(EventServiceProvider::class);
+    }
+
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../Database/Migrations');

@@ -7,7 +7,6 @@ use Illuminate\Database\DatabaseManager;
 use Modules\Order\Contracts\OrderDto;
 use Modules\Order\Contracts\PendingPayment;
 use Modules\Order\Order;
-use Modules\Payment\Actions\CreatePaymentForOrder;
 use Modules\Payment\Actions\CreatePaymentForOrderInterface;
 use Modules\Product\Collections\CartItemCollection;
 use Modules\Product\Warehouse\ProductStockManager;
@@ -26,24 +25,16 @@ class PurchaseItems
     public function handle(CartItemCollection $items, PendingPayment $pendingPayment, UserDto $user): OrderDto
     {
         /** @var OrderDto $order */
-        $order = $this->databaseManager->transaction(function () use ($pendingPayment, $user, $items) {
+        $order = $this->databaseManager->transaction(function () use ($user, $items) {
             $order = Order::startForUser($user->id);
             $order->addLinesFromCartItems($items);
-            $order->fulfill();
-
-            $this->createPaymentForOrder->handle(
-                $order->id,
-                $user->id,
-                $items->totalInCents(),
-                $pendingPayment->provider,
-                $pendingPayment->paymentToken
-            );
+            $order->start();
 
             return OrderDto::fromEloquentModel($order);
         });
 
         $this->events->dispatch(
-            new OrderFulfilled($order, $user)
+            new OrderStarted($order, $user, $pendingPayment)
         );
 
         return $order;
