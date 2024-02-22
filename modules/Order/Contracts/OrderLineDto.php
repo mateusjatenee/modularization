@@ -20,7 +20,7 @@ readonly class OrderLineDto
     }
 
     /**
-     * @return \Modules\Order\DTOs\OrderLineDto[]
+     * @return \Modules\Order\Contracts\OrderLineDto[]
      */
     public static function fromEloquentCollection(Collection $orderLines): array
     {
